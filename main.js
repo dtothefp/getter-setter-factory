@@ -4,8 +4,24 @@ window.optly.mrkt.services  = window.optly.mrkt.services || {};
 window.optly.mrkt.user      = window.optly.mrkt.user || {};
 
 window.optly.mrkt.Optly_Q = function(acctData, expData){
+  var objectCreateSupported = typeof Object.create === 'function';
 
   window.optly.PRELOAD = window.optly.PRELOAD = {};
+
+  if(!objectCreateSupported) {
+    var ThrowAway = function (a, e) {
+      this.acctData = a;
+      this.expData = e;
+    };
+
+    ThrowAway.prototype = window.optly.mrkt.Optly_Q.prototype;
+
+    if(arguments.length > 0) {
+      return new ThrowAway(acctData, expData);
+    } else{
+      return new ThrowAway();
+    }
+  }
 
   if(arguments.length > 0 ){
     window.optly.PRELOAD.token = acctData.csrf_token;
@@ -23,7 +39,7 @@ window.optly.mrkt.Optly_Q = function(acctData, expData){
 
     return Object.create(window.optly.mrkt.Optly_Q.prototype, {
       acctData: {
-        get: function(){return acctCache},
+        get: function(){return acctCache;},
         set: function(val){
           if(!acctCache){
             window.optly.PRELOAD.token = val.csrf_token;
@@ -33,7 +49,7 @@ window.optly.mrkt.Optly_Q = function(acctData, expData){
         }
       },
       expData: {
-        get: function(){return expCache},
+        get: function(){return expCache;},
         set: function(val){
           if(!expCache){
             window.optly.mrkt.user.expData = val;
@@ -53,7 +69,7 @@ window.optly.mrkt.Optly_Q.prototype = {
       if (this[ arg ] !== undefined && arg !== 'object') {
         funcArgs.push(this[ arg ]);
       } else if(arg === 'object') {
-        funcArgs.push[arg];
+        funcArgs.push(arg);
       }
     }.bind(this));
 
@@ -101,7 +117,8 @@ window.optly.mrkt.Optly_Q.prototype = {
     }
   }
 
-}
+};
+
 
 var q = window.optly.mrkt.Optly_Q({csrf_token: 'instantiation args q token'}, {exp: 'instantiation args q exp'});
 
