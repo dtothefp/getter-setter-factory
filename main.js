@@ -8,7 +8,8 @@ window.optly.mrkt.Optly_Q = function(acctData, expData){
   window.optly.PRELOAD = window.optly.PRELOAD = {};
 
   if(arguments.length > 0 ){
-        window.optly.PRELOAD.token = acctData.csrf_token;
+    window.optly.PRELOAD.token = acctData.csrf_token;
+
     return Object.create(window.optly.mrkt.Optly_Q.prototype, {
       acctData: {
         value: window.optly.mrkt.user.acctData = acctData,
@@ -19,6 +20,7 @@ window.optly.mrkt.Optly_Q = function(acctData, expData){
     });
   } else {
     var acctCache, expCache;
+
     return Object.create(window.optly.mrkt.Optly_Q.prototype, {
       acctData: {
         get: function(){return acctCache},
